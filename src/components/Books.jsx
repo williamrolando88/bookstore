@@ -5,7 +5,7 @@ import Book from './Book.jsx';
 const Books = () => {
   return (
     <div className="px-24 py-10">
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 mb-10">
         <Book />
         <Book />
         <Book />
