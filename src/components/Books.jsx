@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { Provider, useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { addBook } from '../redux/books/books.js';
-import store from '../redux/configureStore.js';
 import AddNew from './AddNew.jsx';
 import Book from './Book.jsx';
 
