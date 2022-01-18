@@ -5,12 +5,9 @@ const BOOK_ADDED = 'bookStore/books/BOOK_ADDED';
 const BOOK_REMOVED = 'bookStore/books/BOOK_REMOVED';
 
 // Actions definition
-export const addBook = ({ title, author }) => ({
+export const addBook = (payload) => ({
   type: BOOK_ADDED,
-  payload: {
-    title,
-    author,
-  },
+  payload,
 });
 
 export const removeBook = (id) => ({
@@ -31,6 +28,9 @@ const booksReducer = (state = [], action) => {
           title: action.payload.title,
           author: action.payload.author,
           id: v4(),
+          category: action.payload.category,
+          chapter: action.payload.chapter,
+          progress: action.payload.progress,
         },
       ];
     // Remove book action

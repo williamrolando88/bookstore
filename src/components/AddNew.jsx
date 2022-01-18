@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 
 const AddNew = (props) => {
-  const { setBook } = props;
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
+  const { addBook } = props;
+  const [title, setTitle] = useState('Book');
+  const [author, setAuthor] = useState('Author');
+
+  const handeSubmit = (e) => {
+    e.preventDefault();
+    if (title && author) {
+      addBook(title, author);
+      setTitle('');
+      setAuthor('');
+    }
+  };
 
   return (
     <div className="border-t pt-7">
@@ -11,7 +20,7 @@ const AddNew = (props) => {
       <form
         className="flex gap-6 mt-5"
         action="submit"
-        onSubmit={() => setBook(title, author)}>
+        onSubmit={(e) => handeSubmit(e)}>
         <input
           className="grow border px-4 py-2"
           type="text"

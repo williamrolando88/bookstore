@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Provider, useDispatch } from 'react-redux';
+import { v4 } from 'uuid';
+import { addBook } from '../redux/books/books.js';
+import store from '../redux/configureStore.js';
 import AddNew from './AddNew.jsx';
 import Book from './Book.jsx';
 
 const Books = () => {
+  const dispatch = useDispatch();
+
+  const handleAddBook = (title, author) => {
+    const book = {
+      title,
+      author,
+      id: v4(),
+      category: 'Uncategorized',
+      chapter: `Chapter ${Math.floor(Math.random() * 20)}`,
+      progress: Math.floor(Math.random() * 100),
+    };
+
+    dispatch(addBook(book));
+  };
+
   const demoBooks = [
     {
       title: 'Book 1',
@@ -33,7 +52,7 @@ const Books = () => {
           <Book key={index} book={book} />
         ))}
       </div>
-      <AddNew />
+      <AddNew addBook={(title, author) => handleAddBook(title, author)} />
     </div>
   );
 };
