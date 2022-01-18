@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { addBook } from '../redux/books/books.js';
@@ -24,9 +24,20 @@ const Books = () => {
     dispatch(addBook(book));
   };
 
-  store.subscribe(() => {
+  useEffect(() => {
+    const unsubscribe = store.subscribe(() => {
+      setBooks(store.getState().booksReducer);
+    });
+    return () => {
+      console.log(unsubscribe);
+      unsubscribe;
+    };
+  }, []);
+
+  useEffect(() => {
     setBooks(store.getState().booksReducer);
-  });
+    return () => {};
+  }, [store.getState().booksReducer]);
 
   return (
     <div className="px-24 py-10">
