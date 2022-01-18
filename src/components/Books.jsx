@@ -29,7 +29,6 @@ const Books = () => {
       setBooks(store.getState().booksReducer);
     });
     return () => {
-      console.log(unsubscribe);
       unsubscribe;
     };
   }, []);
