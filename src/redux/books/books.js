@@ -17,6 +17,26 @@ export const removeBook = (id) => ({
   },
 });
 
+export const fetchBooks = () => {
+  return async () => {
+    // dispatch('something');
+    console.log('fetching data');
+    const response = await fetch(
+      'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/dqmOMLs61JKsNZvoKW8K/books',
+      {
+        method: 'GET',
+      },
+    );
+    try {
+      const data = await response.json();
+      console.log(data);
+      // dispatch(addBook(data))
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 // Reducer definition
 const booksReducer = (state = [], action) => {
   switch (action.type) {
