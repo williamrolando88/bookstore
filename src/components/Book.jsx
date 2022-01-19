@@ -1,9 +1,18 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { removeBook } from '../redux/books/books';
 
 const Book = (props) => {
   const {
-    book: { title, author, category, chapter, progress },
+    book: { title, author, category, chapter, progress, id },
   } = props;
+
+  const dispatch = useDispatch();
+
+  const handleRemoveBook = () => {
+    dispatch(removeBook(id));
+  };
+
   return (
     // Unitary container
     <div className="border flex justify-between items-center p-6 gap-4 divide-x-2">
@@ -21,7 +30,7 @@ const Book = (props) => {
             <button className="" type="button">
               Comments
             </button>
-            <button className="pl-2" type="button">
+            <button className="pl-2" type="button" onClick={handleRemoveBook}>
               Remove
             </button>
             <button className="pl-2" type="button">
