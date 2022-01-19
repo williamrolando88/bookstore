@@ -11,7 +11,6 @@ const AddNew = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(category);
     if (title && category !== 'default') {
       const book = {
         item_id: v4(),
@@ -48,7 +47,7 @@ const AddNew = () => {
           className="w-1/4 border px-4 py-2"
           name="category"
           onChange={(e) => setCategory(e.target.value)}
-          defaultValue={category}
+          value={category}
           required>
           <option value="default" disabled hidden>
             Choose a Category:
