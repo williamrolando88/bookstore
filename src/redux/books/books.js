@@ -5,6 +5,14 @@ const BOOK_FETCHED = 'bookStore/books/BOOK_FETCHED';
 const apiUrl =
   'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/dqmOMLs61JKsNZvoKW8K/books';
 
+// *Auxiliar functions
+/**
+ * Function that helps to create a new book with all the required values for the app
+ * @param {string} item_id - Unique Id required to identify book
+ * @param {string} title - Book title
+ * @param {string} category - Book category
+ * @returns {object}
+ */
 const bookCreator = (item_id, title, category) => {
   return {
     item_id: item_id,
@@ -58,7 +66,7 @@ export const fetchBooks = () => {
 // Store one book remotelly
 export const storeBook = (book) => {
   return async (dispatch) => {
-    // todo dispatch action to add book locally
+    // Dispatch action to add book locally
     dispatch(addBook(book));
     // Post book in API
     const response = await fetch(apiUrl, {
@@ -78,7 +86,7 @@ export const storeBook = (book) => {
 
 // Delete one book remotelly
 export const deleteBook = (id) => {
-  return async () => {
+  return async (dispatch) => {
     // Dispatch action to remove book locally
     dispatch(removeBook(id));
     // Post book in API
@@ -100,18 +108,13 @@ const booksReducer = (state = [], action) => {
   switch (action.type) {
     // Add book action
     case BOOK_ADDED:
-      console.log('adding new');
       const { item_id, title, category } = action.payload;
-      console.log(bookCreator(item_id, title, category));
       return [...state, bookCreator(item_id, title, category)];
     // Remove book action
     case BOOK_REMOVED:
-      console.log('removing');
-      // return state.filter((book) => book.id !== action.payload.id);
-      break;
+      return state.filter((book) => book.item_id !== action.payload.id);
     // Fetch remote books action
     case BOOK_FETCHED:
-      console.log('fetching data');
       const newState = [];
       // Iterate inside no-iterative array
       for (const index in action.payload) {
