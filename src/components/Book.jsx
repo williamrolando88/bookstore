@@ -4,13 +4,13 @@ import { deleteBook } from '../redux/books/books';
 
 const Book = (props) => {
   const {
-    book: { title, author, category, chapter, progress, id },
+    book: { title, author, category, chapter, progress, item_id },
   } = props;
 
   const dispatch = useDispatch();
 
   const handleRemoveBook = () => {
-    dispatch(deleteBook(id));
+    dispatch(deleteBook(item_id));
   };
 
   return (
