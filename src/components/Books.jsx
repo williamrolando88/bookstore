@@ -11,11 +11,11 @@ const Books = () => {
 
   const dispatch = useDispatch();
 
-  const handleAddBook = (title, author) => {
+  const handleAddBook = ({ title, category }) => {
     const book = {
       title,
-      author,
-      id: v4(),
+      category,
+      item_id: v4(),
     };
     dispatch(storeBook(book));
   };
@@ -50,7 +50,7 @@ const Books = () => {
           <Book key={book.id} book={book} />
         ))}
       </div>
-      <AddNew addBook={(title, author) => handleAddBook(title, author)} />
+      <AddNew addBook={(book) => handleAddBook(book)} />
       <button onClick={() => dispatch(fetchBooks())}>Fetch</button>
     </div>
   );

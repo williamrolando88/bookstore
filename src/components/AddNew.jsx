@@ -3,38 +3,53 @@ import React, { useState } from 'react';
 const AddNew = (props) => {
   const { addBook } = props;
   const [title, setTitle] = useState('Book');
-  const [author, setAuthor] = useState('Author');
+  const [category, setCategory] = useState('default');
 
   const handeSubmit = (e) => {
     e.preventDefault();
-    if (title && author) {
-      addBook(title, author);
+    if (title && category) {
+      addBook({ title, category });
       setTitle('');
-      setAuthor('');
+      setCategory('');
     }
   };
 
   return (
+    // Main container
     <div className="border-t pt-7">
+      {/* Container title */}
       <h2 className="text-xl uppercase">Add new book</h2>
+      {/* Form container */}
       <form
         className="flex gap-6 mt-5"
         action="submit"
         onSubmit={(e) => handeSubmit(e)}>
+        {/* Book title input */}
         <input
           className="grow border px-4 py-2"
           type="text"
-          placeholder="Book title"
+          placeholder="Write your Book's Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
-        <input
+        {/* Category drop-down menu */}
+        <select
           className="w-1/4 border px-4 py-2"
-          name="author"
-          placeholder="Book author"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-        />
+          name="category"
+          onChange={(e) => setCategory(e.target.value)}
+          defaultValue={category}
+          required>
+          <option value="default" disabled hidden>
+            Choose a Category:
+          </option>
+          <option value="Sci-Fi">Sci-Fi</option>
+          <option value="Drama">Drama</option>
+          <option value="Documental">Documental</option>
+          <option value="Educational">Educational</option>
+          <option value="Romantic">Romantic</option>
+        </select>
+        {/* Submit button */}
         <button
           className="w-44 px-6 text-white text-xs bg-sky-600 rounded"
           type="submit">
