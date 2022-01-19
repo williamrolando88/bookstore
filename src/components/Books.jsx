@@ -1,47 +1,46 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { v4 } from 'uuid';
-import { addBook } from '../redux/books/books';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchBooks } from '../redux/books/books';
 import store from '../redux/configureStore';
 import AddNew from './AddNew';
 import Book from './Book';
 
 const Books = () => {
-  let books;
+  const [books, setBooks] = useState([]);
 
   const dispatch = useDispatch();
 
-  const handleAddBook = (title, author) => {
-    const book = {
-      title,
-      author,
-      id: v4(),
-      category: 'Uncategorized',
-      chapter: `Chapter ${Math.floor(Math.random() * 20)}`,
-      progress: Math.floor(Math.random() * 100),
-    };
-    dispatch(addBook(book));
-  };
-
-  useEffect(() => {
+  useEffect(async () => {
+    // Start fetching remote data
+    dispatch(fetchBooks());
+    // Subscribing on mounting
     const unsubscribe = store.subscribe(() => {
-      books = store.getState().booksReducer;
+      setBooks(store.getState().booksReducer);
     });
+    // Unsubscribing on unmounting
     return () => {
       unsubscribe();
     };
   }, []);
 
-  books = useSelector((state) => state.booksReducer);
+  useEffect(() => {
+    // books = store.getState().booksReducer;
+    // console.log('updating!');
+    // console.log(store.getState().booksReducer);
+    setBooks(store.getState().booksReducer);
+  }, [store.getState().booksReducer]);
+
+  // books = useSelector((state) => state.booksReducer, books);
 
   return (
     <div className="px-24 py-10">
       <div className="flex flex-col gap-6 mb-10">
         {books.map((book) => (
-          <Book key={book.id} book={book} />
+          <Book key={book.item_id} book={book} />
         ))}
       </div>
-      <AddNew addBook={(title, author) => handleAddBook(title, author)} />
+      <AddNew />
+      <button onClick={() => dispatch(fetchBooks())}>Fetch</button>
     </div>
   );
 };
