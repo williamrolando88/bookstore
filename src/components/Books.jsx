@@ -16,12 +16,21 @@ const Books = () => {
       title,
       author,
       id: v4(),
-      category: 'Uncategorized',
-      chapter: `Chapter ${Math.floor(Math.random() * 20)}`,
-      progress: Math.floor(Math.random() * 100),
     };
-    dispatch(addBook(book));
+    dispatch(storeBook(book));
   };
+
+  // const handleAddBook = (title, author) => {
+  //   const book = {
+  //     title,
+  //     author,
+  //     id: v4(),
+  //     category: 'Uncategorized',
+  //     chapter: `Chapter ${Math.floor(Math.random() * 20)}`,
+  //     progress: Math.floor(Math.random() * 100),
+  //   };
+  //   dispatch(addBook(book));
+  // };
 
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {
