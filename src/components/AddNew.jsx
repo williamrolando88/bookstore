@@ -4,7 +4,7 @@ import { storeBook } from '../redux/books/books';
 import { v4 } from 'uuid';
 
 const AddNew = () => {
-  const [title, setTitle] = useState('Book');
+  const [title, setTitle] = useState('');
   const [category, setCategory] = useState('default');
 
   const dispatch = useDispatch();
