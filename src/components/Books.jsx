@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
-import { addBook } from '../redux/books/books';
+import { addBook, fetchBooks } from '../redux/books/books';
 import store from '../redux/configureStore';
 import AddNew from './AddNew';
 import Book from './Book';
@@ -42,6 +42,7 @@ const Books = () => {
         ))}
       </div>
       <AddNew addBook={(title, author) => handleAddBook(title, author)} />
+      <button onClick={() => dispatch(fetchBooks())}>Fetch</button>
     </div>
   );
 };
