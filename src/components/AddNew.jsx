@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { storeBook } from '../redux/books/books';
+import { v4 } from 'uuid';
 
-const AddNew = (props) => {
-  const { addBook } = props;
+const AddNew = () => {
   const [title, setTitle] = useState('Book');
   const [category, setCategory] = useState('default');
 
-  const handeSubmit = (e) => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (title && category) {
-      addBook({ title, category });
+    console.log(category);
+    if (title && category !== 'default') {
+      const book = {
+        item_id: v4(),
+        title: title,
+        category: category,
+      };
+      dispatch(storeBook(book));
       setTitle('');
-      setCategory('');
+      setCategory('default');
     }
   };
 
@@ -23,7 +33,7 @@ const AddNew = (props) => {
       <form
         className="flex gap-6 mt-5"
         action="submit"
-        onSubmit={(e) => handeSubmit(e)}>
+        onSubmit={(e) => handleSubmit(e)}>
         {/* Book title input */}
         <input
           className="grow border px-4 py-2"
