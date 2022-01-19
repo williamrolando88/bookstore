@@ -13,16 +13,14 @@ const apiUrl =
  * @param {string} category - Book category
  * @returns {object}
  */
-const bookCreator = (item_id, title, category) => {
-  return {
-    item_id: item_id,
-    title: title,
-    category: category,
-    author: 'Anonimous',
-    chapter: `Chapter ${Math.floor(Math.random() * 20)}`,
-    progress: Math.floor(Math.random() * 100),
-  };
-};
+const bookCreator = (item_id, title, category) => ({
+  item_id,
+  title,
+  category,
+  author: 'Anonimous',
+  chapter: `Chapter ${Math.floor(Math.random() * 20)}`,
+  progress: Math.floor(Math.random() * 100),
+});
 
 // *Actions definition
 // Add book locally action
@@ -46,61 +44,55 @@ export const updateFetchedBooks = (payload) => ({
 });
 
 // Get remote stored books
-export const fetchBooks = () => {
-  return async (dispatch) => {
-    // Get data from API
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-    });
-    try {
-      // Await for success to store remote data locally
-      const data = await response.json();
-      dispatch(updateFetchedBooks(data));
-    } catch (error) {
-      // Await for an error then logs error message
-      console.error(error);
-    }
-  };
+export const fetchBooks = () => async (dispatch) => {
+  // Get data from API
+  const response = await fetch(apiUrl, {
+    method: 'GET',
+  });
+  try {
+    // Await for success to store remote data locally
+    const data = await response.json();
+    dispatch(updateFetchedBooks(data));
+  } catch (error) {
+    // Await for an error then logs error message
+    console.error(error);
+  }
 };
 
 // Store one book remotelly
-export const storeBook = (book) => {
-  return async (dispatch) => {
-    // Dispatch action to add book locally
-    dispatch(addBook(book));
-    // Post book in API
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(book),
-    });
-    try {
-      // Await for a success then logs message
-      console.log(await response.text());
-    } catch (error) {
-      // Await for an error then logs error message
-      console.error(error);
-    }
-  };
+export const storeBook = (book) => async (dispatch) => {
+  // Dispatch action to add book locally
+  dispatch(addBook(book));
+  // Post book in API
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(book),
+  });
+  try {
+    // Await for a success then logs message
+    console.log(await response.text());
+  } catch (error) {
+    // Await for an error then logs error message
+    console.error(error);
+  }
 };
 
 // Delete one book remotelly
-export const deleteBook = (id) => {
-  return async (dispatch) => {
-    // Dispatch action to remove book locally
-    dispatch(removeBook(id));
-    // Post book in API
-    const response = await fetch(`${apiUrl}/${id}`, {
-      method: 'DELETE',
-    });
-    try {
-      // Await for a success then logs message
-      console.log(await response.text());
-    } catch (error) {
-      // Await for an error then logs error message
-      console.error(error);
-    }
-  };
+export const deleteBook = (id) => async (dispatch) => {
+  // Dispatch action to remove book locally
+  dispatch(removeBook(id));
+  // Post book in API
+  const response = await fetch(`${apiUrl}/${id}`, {
+    method: 'DELETE',
+  });
+  try {
+    // Await for a success then logs message
+    console.log(await response.text());
+  } catch (error) {
+    // Await for an error then logs error message
+    console.error(error);
+  }
 };
 
 // *Reducer definition
@@ -116,18 +108,15 @@ const booksReducer = (state = [], action) => {
     // Fetch remote books action
     case BOOK_FETCHED:
       const newState = [];
-      // Iterate inside no-iterative array
-      for (const index in action.payload) {
-        if (Object.hasOwnProperty.call(action.payload, index)) {
-          newState.push(
-            bookCreator(
-              index,
-              action.payload[index][0].title,
-              action.payload[index][0].category,
-            ),
-          );
-        }
-      }
+      Object.keys(action.payload).forEach((keys, index) => {
+        newState.push(
+          bookCreator(
+            keys,
+            Object.values(action.payload)[index][0].title,
+            Object.values(action.payload)[index][0].category,
+          ),
+        );
+      });
       return newState;
     // Default case
     default:
