@@ -1,11 +1,20 @@
-import { v4 } from 'uuid';
-
 // Types definition
 const BOOK_ADDED = 'bookStore/books/BOOK_ADDED';
 const BOOK_REMOVED = 'bookStore/books/BOOK_REMOVED';
 const BOOK_FETCHED = 'bookStore/books/BOOK_FETCHED';
 const apiUrl =
   'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/dqmOMLs61JKsNZvoKW8K/books';
+
+const bookCreator = (item_id, title, category) => {
+  return {
+    item_id: item_id,
+    title: title,
+    category: category,
+    author: 'Anonimous',
+    chapter: `Chapter ${Math.floor(Math.random() * 20)}`,
+    progress: Math.floor(Math.random() * 100),
+  };
+};
 
 // *Actions definition
 // Add book locally action
@@ -46,40 +55,74 @@ export const fetchBooks = () => {
   };
 };
 
+// Store one book remotelly
+export const storeBook = (book) => {
+  return async (dispatch) => {
+    // todo dispatch action to add book locally
+    dispatch(addBook(book));
+    // Post book in API
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(book),
+    });
+    try {
+      // Await for a success then logs message
+      console.log(await response.text());
+    } catch (error) {
+      // Await for an error then logs error message
+      console.error(error);
+    }
+  };
+};
+
+// Delete one book remotelly
+export const deleteBook = (id) => {
+  return async () => {
+    // Dispatch action to remove book locally
+    dispatch(removeBook(id));
+    // Post book in API
+    const response = await fetch(`${apiUrl}/${id}`, {
+      method: 'DELETE',
+    });
+    try {
+      // Await for a success then logs message
+      console.log(await response.text());
+    } catch (error) {
+      // Await for an error then logs error message
+      console.error(error);
+    }
+  };
+};
+
 // *Reducer definition
 const booksReducer = (state = [], action) => {
   switch (action.type) {
     // Add book action
     case BOOK_ADDED:
-      return [
-        ...state,
-        {
-          title: action.payload.title,
-          author: action.payload.author,
-          id: v4(),
-          category: action.payload.category,
-          chapter: action.payload.chapter,
-          progress: action.payload.progress,
-        },
-      ];
+      console.log('adding new');
+      const { item_id, title, category } = action.payload;
+      console.log(bookCreator(item_id, title, category));
+      return [...state, bookCreator(item_id, title, category)];
     // Remove book action
     case BOOK_REMOVED:
-      return state.filter((book) => book.id !== action.payload.id);
+      console.log('removing');
+      // return state.filter((book) => book.id !== action.payload.id);
+      break;
     // Fetch remote books action
     case BOOK_FETCHED:
+      console.log('fetching data');
       const newState = [];
       // Iterate inside no-iterative array
       for (const index in action.payload) {
         if (Object.hasOwnProperty.call(action.payload, index)) {
-          const book = {
-            item_id: index,
-            title: action.payload[index][0].title,
-            category: action.payload[index][0].category,
-            author: 'Anonimous',
-            chapter: `Chapter ${Math.floor(Math.random() * 20)}`,
-            progress: Math.floor(Math.random() * 100),
-          };
-          newState.push(book);
+          newState.push(
+            bookCreator(
+              index,
+              action.payload[index][0].title,
+              action.payload[index][0].category,
+            ),
+          );
         }
       }
       return newState;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchBooks } from '../redux/books/books';
 import store from '../redux/configureStore';
@@ -6,32 +6,29 @@ import AddNew from './AddNew';
 import Book from './Book';
 
 const Books = () => {
-  let books = [];
+  const [books, setBooks] = useState([]);
 
   const dispatch = useDispatch();
 
-  // const handleAddBook = ({ title, category }) => {
-  //   const book = {
-  //     item_id: v4(),
-  //     title,
-  //     category,
-  //   };
-  //   dispatch(storeBook(book));
-  // };
+  useEffect(async () => {
+    // Start fetching remote data
+    dispatch(fetchBooks());
+    // Subscribing on mounting
+    const unsubscribe = store.subscribe(() => {
+      setBooks(store.getState().booksReducer);
+    });
+    // Unsubscribing on unmounting
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-  // useEffect(() => {
-  //   dispatch(fetchBooks());
-  //   const unsubscribe = store.subscribe(() => {
-  //     books = store.getState().booksReducer;
-  //   });
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   books = store.getState().booksReducer;
-  // }, [store.getState().booksReducer]);
+  useEffect(() => {
+    // books = store.getState().booksReducer;
+    // console.log('updating!');
+    // console.log(store.getState().booksReducer);
+    setBooks(store.getState().booksReducer);
+  }, [store.getState().booksReducer]);
 
   // books = useSelector((state) => state.booksReducer, books);
 
