@@ -2,8 +2,7 @@
 const BOOK_ADDED = 'bookStore/books/BOOK_ADDED';
 const BOOK_REMOVED = 'bookStore/books/BOOK_REMOVED';
 const BOOK_FETCHED = 'bookStore/books/BOOK_FETCHED';
-const apiUrl =
-  'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/dqmOMLs61JKsNZvoKW8K/books';
+const apiUrl = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/dqmOMLs61JKsNZvoKW8K/books';
 
 // *Auxiliar functions
 /**
