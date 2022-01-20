@@ -21,9 +21,11 @@ const Book = (props) => {
         <div>
           {/* Book description */}
           <div>
-            <h3 className="text-xs font-semibold text-stone-700">{category}</h3>
-            <h2 className="text-xl">{title}</h2>
-            <h4 className="text-xs text-sky-600">{author}</h4>
+            <h3 className="text-xs font-bold text-neutral-600 font-Montserrat">
+              {category}
+            </h3>
+            <h2 className="text-xl font-bold">{title}</h2>
+            <h4 className="text-xs text-sky-600 font-light">{author}</h4>
           </div>
           {/* Actions buttons */}
           <div className="flex divide-x gap-2 text-sky-600 mt-5">
@@ -41,10 +43,10 @@ const Book = (props) => {
 
         {/* Progress graphic */}
         <div className="flex w-1/3 items-center gap-5">
-          <div className="rounded-full w-[4.5rem] h-[4.5rem] bg-sky-600"></div>
+          <div className="rounded-full w-[4.5rem] h-[4.5rem] border-[5px] border-sky-600"></div>
           <div className="flex flex-col items-center">
-            <p className="text-3xl font-bold">{`${progress}%`}</p>
-            <p className="text-sm">Completed</p>
+            <p className="text-3xl font-bold font-Montserrat">{`${progress}%`}</p>
+            <p className="text-sm font-Montserrat">Completed</p>
           </div>
         </div>
       </div>

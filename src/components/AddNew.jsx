@@ -27,7 +27,9 @@ const AddNew = () => {
     // Main container
     <div className="border-t pt-7">
       {/* Container title */}
-      <h2 className="text-xl uppercase">Add new book</h2>
+      <h2 className="text-xl uppercase font-Montserrat font-bold text-neutral-600">
+        Add new book
+      </h2>
       {/* Form container */}
       <form
         className="flex gap-6 mt-5"
@@ -35,7 +37,7 @@ const AddNew = () => {
         onSubmit={(e) => handleSubmit(e)}>
         {/* Book title input */}
         <input
-          className="grow border px-4 py-2"
+          className="grow border px-4 py-2 font-Montserrat"
           type="text"
           placeholder="Write your Book's Title"
           value={title}
@@ -44,7 +46,7 @@ const AddNew = () => {
         />
         {/* Category drop-down menu */}
         <select
-          className="w-1/4 border px-4 py-2"
+          className="w-1/4 border px-4 py-2 font-Montserrat"
           name="category"
           onChange={(e) => setCategory(e.target.value)}
           value={category}
@@ -60,7 +62,7 @@ const AddNew = () => {
         </select>
         {/* Submit button */}
         <button
-          className="w-44 px-6 text-white text-xs bg-sky-600 rounded"
+          className="w-44 px-6 text-white text-xs bg-sky-600 rounded uppercase"
           type="submit">
           Add Book
         </button>
